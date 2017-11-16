@@ -1,0 +1,59 @@
+% !TeX TXS-program:compile = txs:///pdflatex/[--shell-escape]
+\documentclass[12pt]{article}
+
+% For colors
+\usepackage[dvipsnames]{xcolor}
+\definecolor{codebg}{rgb}{0.94,0.94,0.94}
+\definecolor{outbg}{rgb}{0.90,0.90,0.95}
+
+% General packages
+\usepackage{physics, amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage[section]{placeins}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{multicol}
+\usepackage{minted}
+\usepackage[super]{nth}
+
+% Better looking captions
+\usepackage{caption}
+\captionsetup{margin=0.5in, labelfont=bf}
+
+\newcommand{\eg}{\textit{e}.\textit{g.}}
+
+% Packages with options
+\usepackage[margin=1in]{geometry}
+\usepackage[kerning=true, tracking=true]{microtype}
+\usepackage{tikz}
+
+% Redefine section-title macros
+% \titleformat{command}[shape]{format}{label}{sep}{hefore-code}[after-code]
+\usepackage{titlesec}
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}[hang]{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[hang]{\large\scshape\filcenter}{\thesubsection}{1em}{}
+
+\usepackage{csquotes}
+
+% Definitions and settings
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\newcommand{\ihat}{\hat{\textbf{\i}}}
+\newcommand{\jhat}{\hat{\textbf{\j}}}
+\newcommand{\khat}{\hat{\textbf{k}}}
+\newcommand{\bigO}[1]{\mathcal{O}\qty(#1)}
+\graphicspath{Images/}
+
+\begin{document}
+\title{Programming Relativistic Physics in Virtual Reality}
+\author{Thomas Longo \and Vince Mutolo \and David Stilwell}
+\maketitle
+
+
+
+
+
+
+
+\end{document}
