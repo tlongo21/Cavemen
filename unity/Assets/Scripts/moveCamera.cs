@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class moveCamera : MonoBehaviour {
 
-    public Vector3 speed;     //this will be the speed in the x-direction, added by user
+    public Vector3 speed = new Vector3(10f,0f,0f);     //this will be the speed in the x-direction, added by user
     public GameObject obj;    // this is the object to be contracted.
 
     private float lightSpeed = 100f; // speed of light
-    private float maximumDistance = 100f; // maximum distance the player travels before resetting
+    public float maximumDistance = 100f; // maximum distance the player travels before resetting
 
     public Text speedText; // a class for adding text
     private float speedCount; // counter that will display the speed 
@@ -32,7 +32,9 @@ public class moveCamera : MonoBehaviour {
     // this is the update loop which works similarly to the FixedUpdate loop
     void Update()
     {   // calls the contraction function from below.
+
         Contraction();
+        
         // if the space bar is pressed down by the player do the following:
         if (Input.GetKeyDown("space"))
         {   
@@ -52,6 +54,7 @@ public class moveCamera : MonoBehaviour {
     // this function will be our length contraction 
     void Contraction()
     {
+
         // Determine the current speed and calculate the gamma factor.
         float currentSpeed = speed.magnitude;
         float gamma = Mathf.Sqrt(1 - Mathf.Pow(currentSpeed / lightSpeed, 2f));
