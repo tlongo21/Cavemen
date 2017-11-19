@@ -28,7 +28,7 @@ public class Attractor : MonoBehaviour
         Attractors.Add(this); // and append all the objects in the scene into the list.
     }
 
-    // when the scene ends do the following.
+    // When the object is removed from the scene, remove it from the list of attractors.
     private void OnDisable()
     {
         Attractors.Remove(this); // remove all objects from the list
