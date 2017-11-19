@@ -20,7 +20,8 @@ public class Attractor : MonoBehaviour
                 Attract(attractor); // call the attractor function
         }
     }
-    // when the scene begins do the following:
+    // When an object is added to the scene, add it to the list of attractors.
+    // I believe objects are enabled by default, one by one, when the scene starts.
     void OnEnable()
     {
         if (Attractors == null) // if there are no objects in the list
