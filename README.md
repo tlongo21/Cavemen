@@ -7,9 +7,16 @@ First, fork the project to your own GitHub account. This only needs to be done o
 ## TODO
 This is where we will store important items which can be checked off next.
 - [x] Get everyone set up with GitHub
-- [ ] Get everyone set up with Unity
-- [ ] Get Unity set up with GitHub
-- [ ] Symplectic Integrators
-	- [ ] Create symplectic integrator for free-fall (no air resistance)
-	- [ ] Create symplectic integrator for double-pendulum problem
-	- [ ] Create a symplectic integrator for central-force systems
+- [x] Get everyone set up with Unity
+- [x] Get Unity set up with GitHub
+- [x] Symplectic Integrators
+	- [x] Create a symplectic integrator for central-force systems
+- [x] Program a simple 1-D special relativistic length contraction based on the speed of the player
+	- [x] Get a ball to contract in the x-direction
+	- [x] Get the camera to move in 1-D and change its speed based on an input from the player.
+- [ ] Work on a more advanced special relativistic system
+	- [ ] Get objects to contract in the y,z directions
+	- [ ] Allow free movement in 3-D for the camera
+- [ ] Include acceleration into the system
+	- [ ] Talk with Dr. Chuss about this
+- [ ] Ultimate Goal: Create a minigame in 2 weeks (this one is a BIG if...)
