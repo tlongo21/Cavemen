@@ -256,3 +256,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 *.pdf
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
