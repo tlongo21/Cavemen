@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class freeCamera : MonoBehaviour
+public class FreeCamera : MonoBehaviour
 {
 
     public float moveSpeed; // This variable will be defined by the user. 

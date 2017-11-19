@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class moveCamera : MonoBehaviour {
+public class ReferenceFrameEngine : MonoBehaviour {
 
     public Vector3 speed = new Vector3(10f,0f,0f);     //this will be the speed in the x-direction, added by user
     public GameObject obj;    // this is the object to be contracted.
