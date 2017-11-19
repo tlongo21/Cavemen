@@ -8,16 +8,17 @@ public class moveCamera : MonoBehaviour {
     public Vector3 speed;     //this will be the speed in the x-direction, added by user
     public GameObject obj;    // this is the object to be contracted.
 
-    private float lightSpeed = 100f;
-    private float maximumDistance = 100f;
+    private float lightSpeed = 100f; // speed of light
+    private float maximumDistance = 100f; // maximum distance the player travels before resetting
 
-    public Text speedText;
-    private float setSpeed;
+    public Text speedText; // a class for adding text
+    private float speedCount; // counter that will display the speed 
 
+    // On start up Unity will run this code
     void Start()
-    {
-        setSpeed = 10f/lightSpeed;
-        SetSpeedText();
+    {   // initialize the counter.
+        speedCount = 10f/lightSpeed;
+        SetSpeedText(); // call our UI update function.
     }
 
     void FixedUpdate()
@@ -28,23 +29,23 @@ public class moveCamera : MonoBehaviour {
             transform.position = Vector3.zero;
     }
 
+    // this is the update loop which works similarly to the FixedUpdate loop
     void Update()
-    {
+    {   // calls the contraction function from below.
         Contraction();
-
+        // if the space bar is pressed down by the player do the following:
         if (Input.GetKeyDown("space"))
-        {
-            speed += new Vector3(10, 0, 0);
-
-            if (speed.magnitude > lightSpeed - 1f)
-            {
-                speed = new Vector3(99.99f, 0, 0);
-            }
-            setSpeed = speed.magnitude/lightSpeed;
+        {   
+            Vector3 lightVector = new Vector3(lightSpeed, 0, 0); // initialize a light Vector.
+            speed = (speed + lightVector*0.9999999f)*0.5f; // update the speed with the speed of light
+            
+            // update the speed counter display
+            speedCount = speed.magnitude/lightSpeed;
             SetSpeedText();
         }    
     }
-
+    // initialize some size limitations for our object.
+    // Yes, Vince, I know this is not good for general coding.
     private Vector3 minSize = new Vector3(0f, 10f, 10f);
     private Vector3 normSize = new Vector3(10f, 10f, 10f);
 
@@ -63,9 +64,10 @@ public class moveCamera : MonoBehaviour {
             obj.transform.localScale = normSize;
     }
 
+    // update the speed counter display that the player will view.
     void SetSpeedText()
-    {
-        speedText.text = setSpeed.ToString() + "c";
+    {   // basically just turns everything into a string and writes it in unity.
+        speedText.text = (speed.magnitude/lightSpeed).ToString() + "c";
     }
 
 }
