@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // this is a program that controls the motion of the camera
-public class CameraController : MonoBehaviour {
+public class CameraFollow : MonoBehaviour {
     // it requires a GameObject that will be defined as the player
     public GameObject player;
 
