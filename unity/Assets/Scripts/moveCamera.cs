@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class moveCamera : MonoBehaviour {
 
-    public Vector3 speed;     //this will be the speed in the x-direction, added by user
+    public float speed = 0f;     //this will be the speed in the x-direction, added by user
 
 
     void FixedUpdate()
-    {
-        Vector3 transform.position = speed / Time.deltaTime;
+    {   // at each time step move the camera based on the speed inserted above.
+        transform.position.x = speed * Time.deltaTime;
     }
 }
