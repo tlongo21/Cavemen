@@ -20,7 +20,8 @@ public class Attractor : MonoBehaviour
                 Attract(attractor); // call the attractor function
         }
     }
-    // when the scene begins do the following:
+    // When an object is added to the scene, add it to the list of attractors.
+    // I believe objects are enabled by default, one by one, when the scene starts.
     void OnEnable()
     {
         if (Attractors == null) // if there are no objects in the list
@@ -28,7 +29,7 @@ public class Attractor : MonoBehaviour
         Attractors.Add(this); // and append all the objects in the scene into the list.
     }
 
-    // when the scene ends do the following.
+    // When the object is removed from the scene, remove it from the list of attractors.
     private void OnDisable()
     {
         Attractors.Remove(this); // remove all objects from the list
