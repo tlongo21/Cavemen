@@ -64,50 +64,38 @@ public class ReferenceFrameEngine : MonoBehaviour {
         Contraction();
 
         Vector3 lightVector = new Vector3(lightSpeed, 0, 0); // Initialize a light Vector.
+        Vector3 currentVel = velocity;
 
         // If the space bar is pressed down by the player do the following:
         if (Input.GetKeyDown("up"))
         {           
             velocity = (velocity + lightVector*0.9999999f)*0.5f; // Update the speed with the speed of light      
-            refFrameEngine.setVelocity(velocity); // Set the Velocity in the Physics Engine in the MainEngine.
-            // Update the speed counter display
-            speedCount = velocity.magnitude / lightSpeed;
-            SetSpeedText();
         }
         if (Input.GetKeyDown("down"))
         {
             velocity = (velocity - new Vector3 (10f,0f,0f));
-            refFrameEngine.setVelocity(velocity); // Set the Velocity in the Physics Engine in the MainEngine.
-            // Update the speed counter display
-            speedCount = velocity.magnitude / lightSpeed;
-            SetSpeedText();
         }
-
         if (Input.GetKeyDown("left"))
         {
             velocity = (velocity + new Vector3(0f,0f,10f));
 
             if (velocity.z < -lightSpeed)
                 velocity.z = lightSpeed * 0.9999f;
-
-            refFrameEngine.setVelocity(velocity); // Set the Velocity in the Physics Engine in the MainEngine.
-            // Update the speed counter display
-            speedCount = velocity.magnitude / lightSpeed;
-            SetSpeedText();
         }
         if (Input.GetKeyDown("right"))
         {
             velocity = (velocity - new Vector3(0f, 0f, 10f));
 
             if (velocity.z > lightSpeed)
-                velocity.z = lightSpeed*0.9999f;
-
-            refFrameEngine.setVelocity(velocity); // Set the Velocity in the Physics Engine in the MainEngine.
-            // Update the speed counter display
-            speedCount = velocity.magnitude / lightSpeed;
-            SetSpeedText();
+                velocity.z = lightSpeed * 0.9999f;    
         }
 
+        refFrameEngine.setVelocity(currentVel); // Set the Velocity in the Physics Engine in the MainEngine.
+        // Update the speed counter display
+        speedCount = currentVel.magnitude / lightSpeed;
+        SetSpeedText();
+
+        //currentVel.magnitude = Mathf.Clamp(velocity.magnitude, -lightSpeed, lightSpeed);
 
 
     }
