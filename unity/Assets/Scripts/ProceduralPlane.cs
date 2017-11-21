@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof(MeshFilter), typeof(MeshRenderer))]
-public class MeshScript : MonoBehaviour {
+// This script will create a plane of connected triangles that are repeatable.
 
+// Like the cube this requires the following commonents to add texture and light to the plane.
+[RequireComponent (typeof(MeshFilter), typeof(MeshRenderer))]
+public class ProceduralPlane : MonoBehaviour {
+
+    // Define some variables for use throughout the script
     Mesh mesh;
     Vector3[] vertices;
     int[] triangles;
 
+    // This is how the user will create the size of the plane.
     public int gridSize;
     public float cellSize = 1;
     public Vector3 gridOffset;
 
-    void Awake()
-    {
+    // Get the mesh
+    void Awake() {
         mesh = GetComponent<MeshFilter>().mesh;
     }
 
@@ -24,19 +29,20 @@ public class MeshScript : MonoBehaviour {
         UpdateMesh();
 	}
 
+    // This will generate our Gird.
     void MakeContiguousProceduralGrid()
-    { //set array size
+    { //set array size based on initial parameters.
         vertices = new Vector3[(gridSize + 1) * (gridSize + 1)];
         triangles = new int[gridSize * gridSize * 6];
 
-        //set tracker integers
+        //set tracker integers these will help us set the size of the plane.
         int v = 0;
         int t = 0;
 
-        // set vertex offset
+        // set vertex offset 
         float vertexOffeset = cellSize * 0.5f;
 
-        // generate Grid
+        // generate Grid (note that x,y) correspond to the (x,z) plane.
         for (int x = 0; x <= gridSize; x++)
         {
             for (int y = 0; y <= gridSize; y++)
@@ -49,7 +55,7 @@ public class MeshScript : MonoBehaviour {
         //reset vertex tracker;
         v = 0;
 
-        // set each cell triangle
+        // set each cell triangle generate the cells based on the total gridSize.
         for (int x = 0; x < gridSize; x++)
         {
             for (int y = 0; y < gridSize; y++)
@@ -66,7 +72,7 @@ public class MeshScript : MonoBehaviour {
         }
     }
 
-
+    // Place the vertex locations and the triangles for the plane, get the normal vector correct.
     private void UpdateMesh()
     {
         mesh.Clear();
