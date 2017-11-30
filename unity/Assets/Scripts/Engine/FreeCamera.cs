@@ -10,11 +10,12 @@ public class FreeCamera : MonoBehaviour
 
     void Update()
     {
-
-        Vector3 position = transform.position; //Initialize the position and the rotation of the camera
+        //Initialize the position and the rotation of the camera
+        Vector3 position = transform.position; 
         Vector3 angles = transform.eulerAngles;
 
-        if (Input.GetKey("up")) // If the up arrow is pushed move forward 
+        // If the up arrow is pushed move forward
+        if (Input.GetKey("up"))  
             {
             position.z += moveSpeed * Time.deltaTime;
             }
@@ -35,16 +36,22 @@ public class FreeCamera : MonoBehaviour
 
         // detect the scroll wheel from unity and use this to zoom in and out.
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        // update the zoom, note that this was too slow originally so I made it 100 times faster for convenience.
+
+        // update the zoom, note that this was too slow originally so
+        // I made it 100 times faster for convenience.
         position.y += scroll * moveSpeed * 100f * Time.deltaTime;
 
         // if the mouse is clicked and dragged the camera rotation will change.
         if (Input.GetMouseButton(0))
         {
-            angles.y += Input.GetAxis("Mouse X")*rotateSpeed; // I don't know why angles.y is for the X axis of the mouse pad.
-            angles.x -= Input.GetAxis("Mouse Y")*rotateSpeed; // Same for angles.x.
+            // I don't know why angles.y is for the X axis of the mouse pad.
+            angles.y += Input.GetAxis("Mouse X")*rotateSpeed; 
+
+            // Same for angles.x.
+            angles.x -= Input.GetAxis("Mouse Y")*rotateSpeed; 
         }
-        // I also have no idea what the Quaternion does. But this script works so I'm not changing it.
+        // I also have no idea what the Quaternion does. 
+        // But this script works so I'm not changing it. 
         Quaternion rotation = Quaternion.Euler(angles.x, angles.y, 0);
 
         // Lastly, update the position and rotation on each update.
