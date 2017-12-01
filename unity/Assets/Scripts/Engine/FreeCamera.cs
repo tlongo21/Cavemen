@@ -6,6 +6,7 @@ public class FreeCamera : MonoBehaviour
 {
 
     public float moveSpeed; // This variable will be defined by the user. 
+    public Vector3 velocity; // Store the camera's (player's) velocity
     private float rotateSpeed = 5f;
 
     void Update()
@@ -18,10 +19,6 @@ public class FreeCamera : MonoBehaviour
         if (Input.GetKey("up"))  
             {
             position.z += moveSpeed * Time.deltaTime;
-            }
-        if (Input.GetKey("down")) // down arrow = backward
-            {
-            position.z -= moveSpeed * Time.deltaTime;
             }
 
         if (Input.GetKey("right")) // right arrow = right
