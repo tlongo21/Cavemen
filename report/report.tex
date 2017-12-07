@@ -71,6 +71,8 @@ With our initial goal of programming a relativistic physics game engine, we firs
 
 In programming in \csharp{}, one of the first things that we learned was the difference between the three types of update loops associated with Unity, the \mintinline{csharp}{Update}, \mintinline{csharp}{FixedUpdate}, and \mintinline{csharp}{LateUpdate} loops. These loops trigger at different times. The \mintinline{csharp}{Update} loop, updates everything within it once per scene frame, and therefore, is very useful for keeping track of counters or inputs. The \mintinline{csharp}{FixedUpdate} loop can update anything within it based on any time interval, and therefore, is typically the main update loop for updating objects that have physical properties associated with them. Lastly, the \mintinline{csharp}{LateUpdate} loop updates anything within it after the \mintinline{csharp}{Update} loop, and therefore, it is mostly useful for the camera which is typically following the object that is being updated.
 
+One important component that we took advantage of was the \mintinline{csharp}{Rigidbody} component. By applying this function to an in game object through Unities GUI system, we give the basic \mintinline{csharp}{Mesh}, that is the 3-D image, of a game object a rigid body. This rigid body can interact with other in game objects via elastic and inelastic collisions. In addition, we can control an objects mass, translational drag, and angular drag through this component. In Unity, this feature is very important for object-object interactions.
+
 \section{Methods}
 \subsection{Introduction to Unity}
 \begin{itemize}
@@ -167,9 +169,7 @@ After getting simple attraction to work, we also made a function for simple harm
 One of the interesting things that we learned while applying this script, was the semi-implicit Euler step. This method of working backward from the acceleration to get the position allows us to efficiently keep track of the energy of the particle without waste. By combining this generic non-relativistic physics engine with our gravitational function above, we were able to give objects a certain initial velocity, and then, due to the gravitational force, have them revolve around each other. 
 
 \subsubsection{Length Contraction}
-We then applied what we learned about forces, position, and mass from our simple non-relativistic engine into these simple laws to a basic physics engine that changes an objects position based on an inputed velocity and acceleration. To get the object to accelerate, we applied one of the things built into Unity, the \mintinline{csharp}{RigidBody} component. This is a function within unity that allows one to give any shape a rigid body which allows other objects to interact with it via elastic and inelastic collisions. In addition, we can give an object mass and change an objects translational and angular drag. For our final scene we kept this script as our main physics engine and used it as a class to act on our observer. 
-
-Next, we programmed a simple length contraction of a sphere based on the speed of an observer. To do this, we needed to use the length contraction formula, which states:
+We then applied what we learned about forces, position, and mass from our simple non-relativistic engine to program a simple length contraction of a sphere based on the speed of an observer. To do this, we needed to use the length contraction formula, which states:
 \begin{equation}
 L = L_0\gamma^{-1}
 \end{equation}
