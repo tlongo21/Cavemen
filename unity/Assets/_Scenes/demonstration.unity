@@ -131,22 +131,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &46625984
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 46625979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17775fc8ec5a6c44aa556873d93fa46c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb_self: {fileID: 46625983}
-  isGravitational: 0
-  isSpringVertex: 0
-  springConstant: 0
-  normSize: {x: 0, y: 0, z: 0}
 --- !u!1 &130739122
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,22 +456,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &369024226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 369024221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17775fc8ec5a6c44aa556873d93fa46c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb_self: {fileID: 369024225}
-  isGravitational: 0
-  isSpringVertex: 0
-  springConstant: 0
-  normSize: {x: 0, y: 0, z: 0}
 --- !u!1001 &411548014
 Prefab:
   m_ObjectHideFlags: 0
@@ -673,22 +641,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &669240470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 669240465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17775fc8ec5a6c44aa556873d93fa46c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb_self: {fileID: 669240469}
-  isGravitational: 0
-  isSpringVertex: 0
-  springConstant: 0
-  normSize: {x: 0, y: 0, z: 0}
 --- !u!1001 &701059844
 Prefab:
   m_ObjectHideFlags: 0
@@ -839,22 +791,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1033125073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1033125071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17775fc8ec5a6c44aa556873d93fa46c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb_self: {fileID: 1033125072}
-  isGravitational: 0
-  isSpringVertex: 0
-  springConstant: 0
-  normSize: {x: 0, y: 0, z: 0}
 --- !u!1 &1315521401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,22 +1109,6 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: f60bb3c81e0945344918c1870caa6b5b, type: 3}
   m_PrefabInternal: {fileID: 133161005}
---- !u!114 &1734361318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1734361314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17775fc8ec5a6c44aa556873d93fa46c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb_self: {fileID: 1734361319}
-  isGravitational: 0
-  isSpringVertex: 0
-  springConstant: 0
-  normSize: {x: 0, y: 0, z: 0}
 --- !u!54 &1734361319
 Rigidbody:
   m_ObjectHideFlags: 0
