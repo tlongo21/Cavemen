@@ -10,30 +10,73 @@ public class CustomBody : MonoBehaviour
 	// Define a list of booleans to set whether certain bodies participate
 	// in different forces, e.g. whether a body participates in mutual
 	// gravitational attraction. Defaults to true.
-	public bool isGravitational = true;
+	public bool isGravitational = false;
 	public bool isSpringVertex  = false;
+    private bool doesContract = false;
 	public float springConstant = 0;
 
-	// Define some physical constants.
-	float G = 0.5f;							// Gravitational constant
+    private GameObject refFrame;       // Call the previous engine.
+    private FreeCamera refFrameObj;
+    private float refFrameSpeed;
+    private float refFrameDirection;
+
+    private float lightSpeed = 100f;
+    public Vector3 normSize;
+
+    // Define some physical constants.
+    float G = 0.5f;							// Gravitational constant
 
 	void FixedUpdate ()
 	{
 		gravitation();
 		spring();
-	}
+    }
 
-	void OnEnable()
+    private void Update()
+    {
+        contract();
+    }
+
+    void OnEnable()
 	{
 		if (CustomBodies == null)
 			CustomBodies = new List<CustomBody>();
 		CustomBodies.Add(this);
+
+        if (this.tag == "contractable")
+        {
+            doesContract = true;
+        } 
 	}
 
 	private void OnDisable()
 	{
 		CustomBodies.Remove(this);
 	}
+
+
+    private void contract()
+    {
+        // On the start up, initialize the variables.
+        refFrame = GameObject.Find("Main Camera");
+        refFrameObj = GetComponent<FreeCamera>();
+
+        // Use the velocity vector determined from the Physics Engine
+        refFrameSpeed = refFrameObj.get_Speed();
+        print(refFrameSpeed);
+        refFrameDirection = refFrameObj.get_direction_angle();
+
+        float V_ref_x = refFrameSpeed * Mathf.Sin(refFrameDirection);
+        float V_ref_z = refFrameSpeed * Mathf.Cos(refFrameDirection);
+
+        float currentXSpeed = Mathf.Abs(V_ref_x);
+        float currentZSpeed = Mathf.Abs(V_ref_z);
+
+        float scaleX_adj = Mathf.Sqrt(1 - Mathf.Pow(currentXSpeed / lightSpeed, 2f));
+        float scaleZ_adj = Mathf.Sqrt(1 - Mathf.Pow(currentZSpeed / lightSpeed, 2f));
+        this.transform.localScale = new Vector3(scaleX_adj * normSize.x, normSize.y, scaleZ_adj * normSize.z);
+    }
+
 
 
 	// Define a function to calculate the TOTAL gravitational force

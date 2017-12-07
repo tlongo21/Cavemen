@@ -5,14 +5,15 @@ using UnityEngine;
 public class FreeCamera : MonoBehaviour
 {
 
-	public float moveSpeed = 100; // This variable will be defined by the user. 
-	public Vector3 velocity; // Store the camera's (player's) velocity
+	public float moveSpeed=80f; // This variable will be defined by the user. 
+    public Vector3 positionVector;
+    private Vector3 velocityVector; // Store the camera's (player's) velocity
 	private float rotateSpeed = 5f;
 
-	void Update()
+	void FixedUpdate()
 	{
 		//Initialize the position and the rotation of the camera
-		Vector3 position = transform.position; 
+		positionVector = transform.position; 
 		Vector3 angles = transform.eulerAngles;
 
 		// Convert theta to radians. angles.y represents the direction
@@ -31,27 +32,27 @@ public class FreeCamera : MonoBehaviour
 		// If the up arrow is pushed move forward
 		if (Input.GetKey("w") || Input.GetKey("up"))  
 		{
-			position.z += V_z * Time.deltaTime;
-			position.x += V_x * Time.deltaTime;
+			positionVector.z += V_z * Time.deltaTime;
+			positionVector.x += V_x * Time.deltaTime;
 		}
 
 		if (Input.GetKey("s") || Input.GetKey("down"))
 		{
-			position.z -= V_z * Time.deltaTime;
-			position.x -= V_x * Time.deltaTime;
+			positionVector.z -= V_z * Time.deltaTime;
+			positionVector.x -= V_x * Time.deltaTime;
 		}
 
 		if (Input.GetKey("a") || Input.GetKey("left"))
 		{
 			// We switch 
-			position.z -= V_zh * Time.deltaTime;
-			position.x -= V_xh * Time.deltaTime;
+			positionVector.z -= V_zh * Time.deltaTime;
+			positionVector.x -= V_xh * Time.deltaTime;
 		}
 
 		if (Input.GetKey("d") || Input.GetKey("right"))
 		{
-			position.z += V_zh * Time.deltaTime;
-			position.x += V_xh * Time.deltaTime;
+			positionVector.z += V_zh * Time.deltaTime;
+			positionVector.x += V_xh * Time.deltaTime;
 		}
 
 		// detect the scroll wheel from unity and use this to zoom in and out.
@@ -75,8 +76,23 @@ public class FreeCamera : MonoBehaviour
 		Quaternion rotation = Quaternion.Euler(angles.x, angles.y, 0);
 
 		// Lastly, update the position and rotation on each update.
-		transform.position = position;
+		transform.position = positionVector;
 		transform.rotation = rotation;
-
 	}
+
+    public void setPosition(Vector3 pos)
+    {
+        positionVector = pos;
+    }
+
+    public float get_Speed()
+    {
+        return moveSpeed;
+    }
+
+    public float get_direction_angle()
+    {
+        return transform.eulerAngles.y;
+    }
+
 }
