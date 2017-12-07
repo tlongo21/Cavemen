@@ -91,11 +91,20 @@ In programming in \csharp{}, one of the first things that we learned was the dif
 	\item In this scene, when the user presses \enquote{spacebar} the object increases its speed by $0.1c$ and all objects in the scene contract accordingly.
 \end{itemize}
 
+\section*{Advanced Relativistic Tests}
+\begin{itemize}
+	\item We then attempted to expand our simple 1-D length contraction scene to a 3-D scene.
+	\item In making this transition, we had to make a number of adjustments to our initial code. 
+	\item First, we had to change our 1-D speed to a 3-D velocity vector that had a magnitude and direction. 
+	\item Then, based on this direction we had to get the objects in the scene to contract accordingly. For example, movement in the $x$-direction should result in a contraction in the $x$-scale of the object.
+	\item Then, we attempted to generalize what we were working on from generic spheres, cubes, and cylinders, to real objects. These objects were taken from Unity's Asset Store, which has a number of free objects available for download. 
+\end{itemize}
+
 \section{Results}
 
 \subsection{GitHub}
 \subsubsection{Introduction to Git}
-The first major problem was to determine how to collaborate between all of the team members. We knew that there would be several (2--3) all working on the same code all at once. Each person would inevitably have their own version of the code. We also wanted to be able to collaborate on both the presentation and the final report in \LaTeX{}. Luckily, this is a problem which computer scientists have already solved.
+The first major problem was to determine how to collaborate between all of the team members. We knew that there would be several (2--3) people, all working on the same code all at once. Each person would inevitably have their own version of the code. We also wanted to be able to collaborate on both the presentation and the final report in \LaTeX{}. Luckily, this is a problem which computer scientists have already solved.
 
 Linus Torvalds, the original creator of the Linux kernel, developed a particularly popular solution to this problem, which he called git. Git is a kind of software called a \enquote{version control system}, or a VCS. In particular, it was developed for massive collaboration (thousands of people) on massive projects (millions of lines of code). Git keeps track of who made what edits, when they made them, and where they made them. Using git, one can revert to any state of the project that ever existed, created by anyone. This is the power of the software. The work is \emph{never} lost. 
 
@@ -124,7 +133,7 @@ Letting the player control the movement of the camera was tricky to set up. By d
 
 \begin{figure}[h]
   \centering
-  \includesvg[width=0.2\textwidth]{images/axis.svg}
+  %\includesvg[width=0.2\textwidth]{images/axis.svg}
   \caption{Shown is Unity's horizontal axis system. This is the plane of the \enquote{ground}. Note that the system is left-handed.}
 \end{figure}
 
@@ -140,10 +149,25 @@ This was implemented in the following code.
 It became necessary to define new velocity constants $v_\mathit{xh}$ and $v_\mathit{zh}$, which are perpendicular to the original speeds. This is to implement sideways movement. This simulates sideways movement by sipmly making it movement perpendicular to the foward movement.
 
 \subsubsection{\mintinline{python}{CustomBody}}
+One of the first things that we did in Unity, in terms of physics, was to see if it was possible to implement some basic physical laws into Unity. We began by programming Newton's Law of Gravitation into Unity. 
+\begin{equation}
+	F_g = G\frac{m M}{r^2}\hat{r}
+\end{equation}
+To apply a force to Unity, we began by determining a way to get $m$ and $M$ to communicate with each other. This was done with the help of \textit{Brackeys} a YouTube channel that makes free Unity tutorials online. As demonstrated in the tutorial, by attaching a \mintinline{csharp}{FixedUpdate} component to the object in Unity's GUI system. This allows us to access the object's mass. Then, we needed to get one in-game object, denoted \mintinline{csharp}{GameObject}, to communicate with another game object. This was done in the following way:
+\inputminted[firstline=7,lastline=8,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
+Here, we initialize a list of \mintinline{csharp}{CustomBodies}. Then, we add things to the list using the following bit of code:
+\inputminted[firstline=26,lastline=36,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
+In the code above, if there are no \mintinline{csharp}{Custombodies}, in our \mintinline{csharp}{Custombody} list, then it adds the object that the Custombody.cs script is attached with to the list. Once the object is in the list, we can access it in Unity and any other script. Lastly, we need to just program the gravitational attraction between the two objects. This was done by creating a \mintinline{csharp}{gravitation} function, as implemented in the following code:
+\inputminted[firstline=39,lastline=70,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
+One thing that was already in Unity that we were able to take advantage of was the \mintinline{csharp}{AddForce} command, which as implied allows us to easily add a force to an object. Lastly, to get this script to constantly update the force throughout the duration of the scene, we call the \mintinline{csharp}{gravitation} function in the \mintinline{csharp}{FixedUpdate} loop.
 
+
+After getting simple attraction to work, we also made a function for simple harmonic motion, which followed the same guidelines. After learning that this was possible, we made a simple non-relativistic physics engine, which used the idea of using the \mintinline{csharp}{Rigidbody} component to access an objects mass. Then we apply Newton's second law to get the objects acceleration. From the acceleration, we can control the velocity and the position of the object. This was done in the following script: 
+\inputminted[firstline=29,lastline=55,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/MainEngine.cs}
+One of the interesting things that we learned while applying this script, was the semi-implicit Euler step. This method of working backward from the acceleration to get the position allows us to efficiently keep track of the energy of the particle without waste. By combining this generic non-relativistic physics engine with our gravitational function above, we were able to give objects a certain initial velocity, and then, due to the gravitational force, have them revolve around each other. 
 
 \subsubsection{Length Contraction}
-We applied what we learned in these simple laws to a basic physics engine that changes an objects position based on an inputed velocity and acceleration. To get the object to accelerate, we applied one of the things built into Unity, the \mintinline{csharp}{RigidBody} component. This is a function within unity that allows one to give any shape a rigid body which allows other objects to interact with it via elastic and inelastic collisions. In addition, we can give an object mass and change an objects translational and angular drag. For our final scene we kept this script as our main physics engine and used it as a class to act on our observer. 
+We then applied what we learned about forces, position, and mass from our simple non-relativistic engine into these simple laws to a basic physics engine that changes an objects position based on an inputed velocity and acceleration. To get the object to accelerate, we applied one of the things built into Unity, the \mintinline{csharp}{RigidBody} component. This is a function within unity that allows one to give any shape a rigid body which allows other objects to interact with it via elastic and inelastic collisions. In addition, we can give an object mass and change an objects translational and angular drag. For our final scene we kept this script as our main physics engine and used it as a class to act on our observer. 
 
 Next, we programmed a simple length contraction of a sphere based on the speed of an observer. To do this, we needed to use the length contraction formula, which states:
 \begin{equation}

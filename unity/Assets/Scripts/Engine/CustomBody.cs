@@ -57,9 +57,9 @@ public class CustomBody : MonoBehaviour
 				displacement_vector = rb_external.position - rb_self.position;
 
 				distance = displacement_vector.magnitude;
-				
-				// Handle the case of zero distance, which implies infinite gravitation. Here,
-				// we can get away with just doing nothing. This will suffice for now.
+
+				// Handle the case of zero distance, which implies infinite gravitation.
+				// Here, we can get away with just doing nothing. This will suffice for now.
 				if (distance == 0f)
 					return;
 
@@ -67,7 +67,6 @@ public class CustomBody : MonoBehaviour
 				Vector3 force = displacement_vector.normalized * forceMagnitude;
 
 				rb_self.AddForce(force);
-			
 		}
 	}
 
@@ -76,8 +75,8 @@ public class CustomBody : MonoBehaviour
 	// labeled "isSpringVertex".
 	void spring() {
 		foreach (CustomBody body in CustomBodies)
-		{ 
-		
+		{
+
 			// Access the RigidBody properties of the selected EXTERNAL body.
 			Rigidbody rb_external = body.rb_self;
 
@@ -93,7 +92,7 @@ public class CustomBody : MonoBehaviour
 				displacement_vector = rb_self.position - rb_external.position;
 
 				distance = displacement_vector.magnitude;
-				
+
 				// Handle the case of zero distance, which implies infinite gravitation. Here,
 				// we can get away with just doing nothing. This will suffice for now.
 				if (distance == 0f)
@@ -103,7 +102,7 @@ public class CustomBody : MonoBehaviour
 				Vector3 force = -displacement_vector.normalized * forceMagnitude;
 
 				rb_self.AddForce(force);
-			
+
 		}
 	}
 
