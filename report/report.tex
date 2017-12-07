@@ -1,3 +1,4 @@
+% !TeX document-id = {228518e8-78bc-4d31-8f71-78944704b115}
 % !TeX TXS-program:compile = txs:///pdflatex/[--shell-escape]
 \documentclass[12pt]{article}
 
@@ -6,6 +7,13 @@
 \definecolor{codebg}{rgb}{0.94,0.94,0.94}
 \definecolor{outbg}{rgb}{0.90,0.90,0.95}
 
+% Font packages
+\usepackage[utf8]{inputenc}
+\usepackage[lf]{Baskervaldx}
+\usepackage[vvarbb, baskervaldx]{newtxmath}
+\usepackage{inconsolata}
+\usepackage[cal=boondoxo]{mathalfa} % mathcal from STIX
+
 % General packages
 \usepackage{physics, amsmath, amssymb}
 \usepackage{booktabs}
@@ -13,6 +21,7 @@
 \usepackage{cleveref}
 \usepackage{graphicx}
 \usepackage{siunitx}
+\usepackage{svg}
 \usepackage{multicol}
 \usepackage{minted}
 \usepackage[super]{nth}
@@ -43,17 +52,195 @@
 \newcommand{\jhat}{\hat{\textbf{\j}}}
 \newcommand{\khat}{\hat{\textbf{k}}}
 \newcommand{\bigO}[1]{\mathcal{O}\qty(#1)}
+\def\cpp{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.1em}{\small\bf ++}}}
+\newcommand{\csharp}{C$^\sharp$}
 \graphicspath{Images/}
 
 \begin{document}
 \title{Programming Relativistic Physics in Virtual Reality}
-\author{Thomas Longo \and Vince Mutolo \and David Stilwell}
+\author{Thomas Longo \and Vince Mutolo}
 \maketitle
 
+\section{Introduction}
+The ultimate goal of this project is to create a physics engine that works in special relativistic frames. After creating this engine, we will project a simple scene into Villanova's CAVE Automatic Virtual Environment (CAVE). In doing this, we intend to learn about special relativity and how the observer's view changes based on its speed and its speed relative to other objects. In addition, we intend to convey this knowledge to other students in a fun and creative way through the use of the CAVE.
+
+\section{Theory}
+There was a very small amount of theory for our project because our project was mostly computer programming. Therefore, this theory will mostly be used to define some of the terms that will be used in the following sections for how our code works.
+
+With our initial goal of programming a relativistic physics game engine, we first, needed to get acquainted with the system that we were using. We decided to use Unity, which is a game development engine that is compatible with the CAVE and has a number of physical systems already preprogrammed into it. However, in working with Unity we must understand how Unity defines its space. It uses a left handed coordinate axis system where $y$ is defined to be up. Second, Unity uses a system where all scripts are written in \csharp{}. This is a coding language that was unfamiliar to us, but was close to \cpp{}. 
+
+In programming in \csharp{}, one of the first things that we learned was the difference between the three types of update loops associated with Unity, the \mintinline{csharp}{Update}, \mintinline{csharp}{FixedUpdate}, and \mintinline{csharp}{LateUpdate} loops. These loops trigger at different times. The \mintinline{csharp}{Update} loop, updates everything within it once per scene frame, and therefore, is very useful for keeping track of counters or inputs. The \mintinline{csharp}{FixedUpdate} loop can update anything within it based on any time interval, and therefore, is typically the main update loop for updating objects that have physical properties associated with them. Lastly, the \mintinline{csharp}{LateUpdate} loop updates anything within it after the \mintinline{csharp}{Update} loop, and therefore, it is mostly useful for the camera which is typically following the object that is being updated.
+
+One important component that we took advantage of was the \mintinline{csharp}{Rigidbody} component. By applying this function to an in game object through Unities GUI system, we give the basic \mintinline{csharp}{Mesh}, that is the 3-D image, of a game object a rigid body. This rigid body can interact with other in game objects via elastic and inelastic collisions. In addition, we can control an objects mass, translational drag, and angular drag through this component. In Unity, this feature is very important for object-object interactions.
+
+\section{Methods}
+\subsection{Introduction to Unity}
+\begin{itemize}
+	\item We began by getting acquainted with Unity through the use of various tutorials.
+	\item In these tutorials, we learned about how to use the GUI interface associated with Unity.
+	\item Then, we learned about how to use \csharp{} and how to apply different scripts to object in the game.
+\end{itemize}
+
+\subsection{Simple Physics}
+\begin{itemize}
+	\item We programmed a simple scene that takes into account Newton's Law of Gravitation and Hooke's Law.
+	\item After, we made a basic physics engine to update an object's position, based on an inputed velocity and acceleration.
+\end{itemize}
+
+\subsection{Relativistic Tests}
+\begin{itemize}
+	\item After becoming acquainted with Unity and \csharp{}, we made a simple 1-D length contraction scene in Unity. 
+	\item In this scene, when the user presses \enquote{spacebar} the object increases its speed by $0.1c$ and all objects in the scene contract accordingly.
+\end{itemize}
+
+\subsection{Advanced Relativistic Tests}
+\begin{itemize}
+	\item We then attempted to expand our simple 1-D length contraction scene to a 3-D scene.
+	\item In making this transition, we had to make a number of adjustments to our initial code. 
+	\item First, we had to change our 1-D speed to a 3-D velocity vector that had a magnitude and direction. 
+	\item Then, based on this direction we had to get the objects in the scene to contract accordingly. For example, movement in the $x$-direction should result in a contraction in the $x$-scale of the object.
+	\item Then, we attempted to generalize what we were working on from generic spheres, cubes, and cylinders, to real objects. These objects were taken from Unity's Asset Store, which has a number of free objects available for download. 
+\end{itemize}
+
+\section{Results}
+
+\subsection{GitHub}
+\subsubsection{Introduction to Git}
+The first major problem was to determine how to collaborate between all of the team members. We knew that there would be several (2--3) people, all working on the same code all at once. Each person would inevitably have their own version of the code. We also wanted to be able to collaborate on both the presentation and the final report in \LaTeX{}. Luckily, this is a problem which computer scientists have already solved.
+
+Linus Torvalds, the original creator of the Linux kernel, developed a particularly popular solution to this problem, which he called git. Git is a kind of software called a \enquote{version control system}, or a VCS. In particular, it was developed for massive collaboration (thousands of people) on massive projects (millions of lines of code). Git keeps track of who made what edits, when they made them, and where they made them. Using git, one can revert to any state of the project that ever existed, created by anyone. This is the power of the software. The work is \emph{never} lost. 
+
+The most common use of the software is as follows. A single user will create a git repository for the project. Other users will \enquote{branch} off of this main repository and create whatever changes they want. When a user wants to record the current state of his project in the immutable history of states in the repository, the user will \enquote{commit} to his or her branch. Generally, users should only work on branches of the main project, or \enquote{main branch}. The main branch is reserved for stable, presentable versions of the project. When a side branch becomes suitably stable, it is then \enquote{merged} with the main branch, and deleted.
+
+GitHub is the most popular open-source website in the world, and underlying it is the git software. This was used as the shared cloud-based repository for the entirety of our project, including the presentation (done in HTML), the report, and the unity scenes and code.
+
+\subsubsection{The \mintinline{text}{.gitignore} File}
+There were a few challenges in getting git set up correctly and working. First and foremost among these challenges was creating the \mintinline{text}{.gitignore} file. It would be problematic if git were to keep track of \emph{every} file in the entire project. Computer programs routinely produce thousands of generated files which are regenerated on each run of the program. These files do not need to be maintained and placed under version control. In reality, the only files which need to be watched are mostly the ones which humans edit. This spawned the idea of a \mintinline{text}{.gitignore} file. This file contains string patterns which \enquote{ignore} certain types of files, in certain directories, and lots of other definable patterns. A sample of ours appears as follows.
+
+\inputminted[firstline=0,lastline=10,linenos,fontsize=\footnotesize,bgcolor=codebg]{text}{../.gitignore}
+
+Anything specified in this file is specified \emph{to be ignored}. Thus, anything in Unity's \mintinline{text}{Library}, \mintinline{text}{Temp}, or \mintinline{text}{Build} directories, among others, will not be included in the repository.
+
+\subsubsection{Helpfulness}
+Git and GitHub were absolutely indispensable. At one point in the project, when a piece of code was not working, it was said, \enquote{Worst case scenario, I can just delete the branch and start over.} This is an incredibly freeing aspect of the software, and it encourages creativity and experimentation. It does not matter what ridiculous kind of breaking changes are made, since it is trivial to revert to a previous version of the project, or simply delete the current branch and re-branch \enquote{off of main}.
+
+The software also allowed the team members of this project to work independently on different aspects of the project at the same time. If one member was curious as to what the other was working on, all we had to do was switch to the other's branch. Code could then be copied and reused in other branches still. The process encourages efficient, safe, and creative work flows.  
+
+
+\subsection{Developing the Physics Engine}
+
+\subsubsection{Camera Movement}
+
+Letting the player control the movement of the camera was tricky to set up. By default, Unity has no player movement built in. At first, we designed code so that the player could look around and move using the arrow keys. This was essentially the goal, but the movement was unintuitive. Each arrow key corresponded to a certain absolute direction, regardless of the direction the user is facing. Most games and control system have \enquote{w} or the up-arrow move the or the up-arrow move the user \enquote{forward}. This took some playing around with angles.
+
+\begin{figure}[h]
+  \centering
+  %\includesvg[width=0.2\textwidth]{images/axis.svg}
+  \caption{Shown is Unity's horizontal axis system. This is the plane of the \enquote{ground}. Note that the system is left-handed.}
+\end{figure}
+
+So, knowing this angle, and the defined movement speed of the camera, we can compute the speed in both the $x$ and $z$ directions using the following equations.
+\begin{align}
+v_x &= v \sin(\theta) \\
+v_z &= v \cos(\theta)
+\end{align}
+
+This was implemented in the following code.
+\inputminted[firstline=12,lastline=29,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/FreeCamera.cs}
+
+It became necessary to define new velocity constants $v_\mathit{xh}$ and $v_\mathit{zh}$, which are perpendicular to the original speeds. This is to implement sideways movement. This simulates sideways movement by sipmly making it movement perpendicular to the foward movement.
+
+\subsubsection{The \mintinline{python}{CustomBody} Class}
+One of the first things that we did in Unity, in terms of physics, was to see if it was possible to implement some basic physical laws into Unity. We began by programming Newton's Law of Gravitation into Unity. 
+\begin{equation}
+	\vec{F_g} = G\frac{m M}{r^2}\vu{r}
+\end{equation}
+To apply a force to Unity, we began by determining a way to get $m$ and $M$ to communicate with each other. This was done with the help of Brackeys a YouTube channel that makes free Unity tutorials online. As demonstrated in the tutorial, by attaching a \mintinline{csharp}{FixedUpdate} component to the object in Unity's GUI system. This allows us to access the object's mass. Then, we needed to get one in-game object, denoted \mintinline{csharp}{GameObject}, to communicate with another game object. This was done in the following way:
+\inputminted[firstline=7,lastline=8,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
+Here, we initialize a list of \mintinline{csharp}{CustomBodies}. Then, we add things to the list using the following bit of code:
+\inputminted[firstline=26,lastline=36,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
+In the code above, if there are no \mintinline{csharp}{Custombodies}, in our \mintinline{csharp}{Custombody} list, then it adds the object that the Custombody.cs script is attached with to the list. Once the object is in the list, we can access it in Unity and any other script. Lastly, we need to just program the gravitational attraction between the two objects. This was done by creating a \mintinline{csharp}{gravitation} function, as implemented in the following code:
+\inputminted[firstline=39,lastline=73,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
+One thing that was already in Unity that we were able to take advantage of was the \mintinline{csharp}{AddForce} command, which as implied allows us to easily add a force to an object. Lastly, to get this script to constantly update the force throughout the duration of the scene, we call the \mintinline{csharp}{gravitation} function in the \mintinline{csharp}{FixedUpdate} loop.
+
+
+After getting simple attraction to work, we also made a function for simple harmonic motion, which followed the same guidelines. After learning that this was possible, we made a simple non-relativistic physics engine, which used the idea of using the \mintinline{csharp}{Rigidbody} component to access an objects mass. Then we apply Newton's second law to get the objects acceleration. From the acceleration, we can control the velocity and the position of the object. This was done in the following script: 
+
+\inputminted[firstline=29,lastline=55,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/MainEngine.cs}
+
+One of the interesting things that we learned while applying this script, was the semi-implicit Euler step. This method of working backward from the acceleration to get the position allows us to efficiently keep track of the energy of the particle without waste. The difference between the explicit Euler step and the semi-implicit is remarkably simple. Both use the simplest approximation of the derivative,
+\begin{equation}
+\Delta x \approx \dv{x}{t} \Delta t.
+\end{equation}
+Here, $f'$ would be represented by the velocity of the object, while $\Delta x$ would be the displacement, and $\Delta t$ the elapsed time. This approximation is also used for the velocity calculation in both the the explicit and semi-implicit Euler steps. 
+
+The only difference between the two is that the velocity calculation comes \emph{first} in the explicit step, but \emph{second} in the semi-implicit. This has the advantage of being a symplectic integrator, meaning it can be derived from Hamilton's equations of motion. This causes it to be remarkably good at conserving energy. A good example of where non-symplectic integrators tend to fail is in damped oscillators. The standard Euler-step tends to \emph{gain} energy as time advances becasue of numerical approximation mistakes. Making the $\Delta t$ smaller here is not very helpful. A symplectic verison of the integrator (\eg the semi-implicit Euler) has no such problem.
+
+By combining this generic non-relativistic physics engine with our gravitational function above, we were able to give objects a certain initial velocity, and then, due to the gravitational force, have them revolve around each other. 
+
+\subsubsection{Length Contraction}
+We then applied what we learned about forces, position, and mass from our simple non-relativistic engine to program a simple length contraction of a sphere based on the speed of an observer. To do this, we needed to use the length contraction formula, which states:
+\begin{equation}
+L = L_0\gamma^{-1}
+\end{equation}
+Where $L_0$ is the proper length, or the length of an object in its rest frame. $L$ is the length observed by an observer in relative motion with respect to that object, and $\gamma$ is:
+\begin{equation}
+\gamma = (1-\beta^2)^{-1/2}
+\end{equation}
+For this scene, we made the camera the observer, so that the viewer is always in the position of the moving object and will get to see the other objects contract. Therefore, using our main physics engine we attached a velocity to our camera, and we attached a generic object variable to the camera as well. Then, in unity, we mapped our object, the sphere, to the camera, so that as the camera's speed changed so to did the objects length. To do this, we added a specific \enquote{Tag} called \enquote{contractible} to all the objects in the scene that we want to contract. We can then create a list of objects, jut like what we did for the Custombody.cs script, that have the \enquote{contractible} tag and get them to contract. This was done like so:
+\inputminted[firstline=38,lastline=48,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/ReferenceFrameEngine.cs}
+Once we have identifies the objects that we want to contract, we can get them to change their size by adjusting the built in \mintinline{csharp}{localScale} of the object. This was implemented like so:
+\inputminted[firstline=123,lastline=132,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/ReferenceFrameEngine.cs}
+The gamma factor that we used in this contraction, comes from the following:
+\inputminted[firstline=119,lastline=119,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/ReferenceFrameEngine.cs}
+To get the \mintinline{csharp}{currentXSpeed} we had the script call the velocity from the FreeCamera.cs script discussed previously. This allowed us to change the speed of the observer in one script, and then, update what was going on in the scene in another script, allowing us to manage our code more precisely and efficiently. 
+
+For the 1-D case, we had the observer, the camera, moving in a set direction with a preset velocity. The next step of this project would be to give the player control of the velocity and the direction, and have the objects in the scene adjust accordingly.
+
+\section{Conclusion}
+Overall, a large portion of this project was getting set up with Unity, getting accustom to working with \csharp{}, and laying the foundation's for the more advanced work that we will be doing next semester. In working on this project, we were able to learn a great deal about video game programming and working together on a large scale project, in which GitHub was indispensable. There is still much to be done with this project, but based on the work we did this semester, we understand the basics of Unity and we are ready to take what we have learned and apply it to more advanced physics. 
+
+\section{Future Work}
+
+\paragraph{Rotation Dependent Scaling} 
+One of the problems that we encountered in trying to get a 3-D length contraction to work was that if we rotated an object by 90$^\circ$ and tried to contract it, we would change the scale in the $x$ and $z$ directions, but due to the rotation this would no longer change the correct observed scale. Therefore, we need to figure out a way to keep track of the rotation of an object and contract the length of the object in accordance with that initial parameter. 
+
+\paragraph{Macro-Scale Length Contraction}
+Even within the theory of special relativity, there is plenty of work to be done. There are several aspects of the simulation which are blatantly non-physical. First and foremost, the length contraction does not affect the distance between the reference frame (the camera) and the other objects in the scene. This will eventually be implemented by keeping track of the reference frame's position and speed, and adjusting the distance between all other objects and itself accordingly.
+
+\paragraph{Relativistic Apparent Bending}
+When traveling at speeds close to the speed of light, the time it takes light to bounce off of objects and travel to the observer becomes non-negligible. So, from the perspective of the observer (player camera), when traveling at high speeds causes light from parts of an object that are closer to the player to arrive before light from parts that are further. This causes objects to appear as though they are bending. The futher a part of an object is from the player (very high up, for example), the more it appears to bend. This effect can be implemented using the concept of a \enquote{mesh} in Unity, which defines the shape of an object. It is possible to reshape a mesh using a set of calculated points and by using cubic interpolation between them.
+
+\paragraph{Game Objectives}
+Ideally, the working result of the team's efforts would be a playable video game. While we do not aim to approach a game which would be commerically viable, there should at least be some game objective. This will most likely be to collect objects in a timed fashion, or, more ambitiously, to shoot small pellets at targets or into containers. Both of these have the advantage of being spatially-based objectives, which will highlight the relativistic effects we are programming into the system. The bending of the light and the length contraction will both make this more challenging for players.
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 \end{document}

@@ -6,7 +6,7 @@ public class MainEngine : MonoBehaviour {
 
 	public Rigidbody rb;
 	public Vector3 velocityVector; //average velocity this FixedUpdate()
-	private Vector3 netForceVector; 
+	private Vector3 netForceVector;
 	public List<Vector3> forceVectorList = new List<Vector3>();
 
 	void FixedUpdate ()
@@ -52,7 +52,6 @@ public class MainEngine : MonoBehaviour {
 		// Update the position vector AFTER the velocity vector.
 		// This is a key piece of using the semi-implicit Euler.
 		transform.position += velocityVector * Time.deltaTime;
-
 	}
     // Set the velocity outside the MainEngine.
     public void setVelocity(Vector3 vel)
@@ -60,4 +59,3 @@ public class MainEngine : MonoBehaviour {
         velocityVector = vel;
     }
 }
-
