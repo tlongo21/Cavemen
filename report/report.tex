@@ -93,7 +93,7 @@ One important component that we took advantage of was the \mintinline{csharp}{Ri
 	\item In this scene, when the user presses \enquote{spacebar} the object increases its speed by $0.1c$ and all objects in the scene contract accordingly.
 \end{itemize}
 
-\section*{Advanced Relativistic Tests}
+\subsection{Advanced Relativistic Tests}
 \begin{itemize}
 	\item We then attempted to expand our simple 1-D length contraction scene to a 3-D scene.
 	\item In making this transition, we had to make a number of adjustments to our initial code. 
@@ -135,7 +135,7 @@ Letting the player control the movement of the camera was tricky to set up. By d
 
 \begin{figure}[h]
   \centering
-  \includesvg[width=0.2\textwidth]{images/axis.svg}
+  %\includesvg[width=0.2\textwidth]{images/axis.svg}
   \caption{Shown is Unity's horizontal axis system. This is the plane of the \enquote{ground}. Note that the system is left-handed.}
 \end{figure}
 
@@ -187,13 +187,23 @@ Where $L_0$ is the proper length, or the length of an object in its rest frame. 
 \begin{equation}
 \gamma = (1-\beta^2)^{-1/2}
 \end{equation}
-For this scene, we made the camera the observer, so that the viewer is always in the position of the moving object and will get to see the other objects contract. Therefore, using our main physics engine we attached a velocity to our camera, and we attached a generic object variable to the camera as well. Then, in unity, we mapped our object, the sphere, to the camera, so that as the camera's speed changed so to did the objects length.
+For this scene, we made the camera the observer, so that the viewer is always in the position of the moving object and will get to see the other objects contract. Therefore, using our main physics engine we attached a velocity to our camera, and we attached a generic object variable to the camera as well. Then, in unity, we mapped our object, the sphere, to the camera, so that as the camera's speed changed so to did the objects length. To do this, we added a specific \enquote{Tag} called \enquote{contractible} to all the objects in the scene that we want to contract. We can then create a list of objects, jut like what we did for the Custombody.cs script, that have the \enquote{contractible} tag and get them to contract. This was done like so:
+\inputminted[firstline=38,lastline=48,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/ReferenceFrameEngine.cs}
+Once we have identifies the objects that we want to contract, we can get them to change their size by adjusting the built in \mintinline{csharp}{localScale} of the object. This was implemented like so:
+\inputminted[firstline=123,lastline=132,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/ReferenceFrameEngine.cs}
+The gamma factor that we used in this contraction, comes from the following:
+\inputminted[firstline=119,lastline=119,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/ReferenceFrameEngine.cs}
+To get the \mintinline{csharp}{currentXSpeed} we had the script call the velocity from the FreeCamera.cs script discussed previously. This allowed us to change the speed of the observer in one script, and then, update what was going on in the scene in another script, allowing us to manage our code more precisely and efficiently. 
 
-\inputminted[firstline=2,lastline=10,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/CameraFollow.cs}
+For the 1-D case, we had the observer, the camera, moving in a set direction with a preset velocity. The next step of this project would be to give the player control of the velocity and the direction, and have the objects in the scene adjust accordingly.
 
-
+\section{Conclusion}
+Overall, a large portion of this project was getting set up with Unity, getting accustom to working with \csharp{}, and laying the foundation's for the more advanced work that we will be doing next semester. In working on this project, we were able to learn a great deal about video game programming and working together on a large scale project, in which GitHub was indispensable. There is still much to be done with this project, but based on the work we did this semester, we understand the basics of Unity and we are ready to take what we have learned and apply it to more advanced physics. 
 
 \section{Future Work}
+
+\paragraph{Rotation Dependent Scaling} 
+One of the problems that we encountered in trying to get a 3-D length contraction to work was that if we rotated an object by 90$^\circ$ and tried to contract it, we would change the scale in the $x$ and $z$ directions, but due to the rotation this would no longer change the correct observed scale. Therefore, we need to figure out a way to keep track of the rotation of an object and contract the length of the object in accordance with that initial parameter. 
 
 \paragraph{Macro-Scale Length Contraction}
 Even within the theory of special relativity, there is plenty of work to be done. There are several aspects of the simulation which are blatantly non-physical. First and foremost, the length contraction does not affect the distance between the reference frame (the camera) and the other objects in the scene. This will eventually be implemented by keeping track of the reference frame's position and speed, and adjusting the distance between all other objects and itself accordingly.
