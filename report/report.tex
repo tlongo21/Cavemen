@@ -133,7 +133,7 @@ Letting the player control the movement of the camera was tricky to set up. By d
 
 \begin{figure}[h]
   \centering
-  %\includesvg[width=0.2\textwidth]{images/axis.svg}
+  \includesvg[width=0.2\textwidth]{images/axis.svg}
   \caption{Shown is Unity's horizontal axis system. This is the plane of the \enquote{ground}. Note that the system is left-handed.}
 \end{figure}
 
@@ -148,23 +148,33 @@ This was implemented in the following code.
 
 It became necessary to define new velocity constants $v_\mathit{xh}$ and $v_\mathit{zh}$, which are perpendicular to the original speeds. This is to implement sideways movement. This simulates sideways movement by sipmly making it movement perpendicular to the foward movement.
 
-\subsubsection{\mintinline{python}{CustomBody}}
+\subsubsection{The \mintinline{python}{CustomBody} Class}
 One of the first things that we did in Unity, in terms of physics, was to see if it was possible to implement some basic physical laws into Unity. We began by programming Newton's Law of Gravitation into Unity. 
 \begin{equation}
-	F_g = G\frac{m M}{r^2}\hat{r}
+	\vec{F_g} = G\frac{m M}{r^2}\vu{r}
 \end{equation}
-To apply a force to Unity, we began by determining a way to get $m$ and $M$ to communicate with each other. This was done with the help of \textit{Brackeys} a YouTube channel that makes free Unity tutorials online. As demonstrated in the tutorial, by attaching a \mintinline{csharp}{FixedUpdate} component to the object in Unity's GUI system. This allows us to access the object's mass. Then, we needed to get one in-game object, denoted \mintinline{csharp}{GameObject}, to communicate with another game object. This was done in the following way:
+To apply a force to Unity, we began by determining a way to get $m$ and $M$ to communicate with each other. This was done with the help of Brackeys a YouTube channel that makes free Unity tutorials online. As demonstrated in the tutorial, by attaching a \mintinline{csharp}{FixedUpdate} component to the object in Unity's GUI system. This allows us to access the object's mass. Then, we needed to get one in-game object, denoted \mintinline{csharp}{GameObject}, to communicate with another game object. This was done in the following way:
 \inputminted[firstline=7,lastline=8,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
 Here, we initialize a list of \mintinline{csharp}{CustomBodies}. Then, we add things to the list using the following bit of code:
 \inputminted[firstline=26,lastline=36,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
 In the code above, if there are no \mintinline{csharp}{Custombodies}, in our \mintinline{csharp}{Custombody} list, then it adds the object that the Custombody.cs script is attached with to the list. Once the object is in the list, we can access it in Unity and any other script. Lastly, we need to just program the gravitational attraction between the two objects. This was done by creating a \mintinline{csharp}{gravitation} function, as implemented in the following code:
-\inputminted[firstline=39,lastline=70,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
+\inputminted[firstline=39,lastline=73,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/CustomBody.cs}
 One thing that was already in Unity that we were able to take advantage of was the \mintinline{csharp}{AddForce} command, which as implied allows us to easily add a force to an object. Lastly, to get this script to constantly update the force throughout the duration of the scene, we call the \mintinline{csharp}{gravitation} function in the \mintinline{csharp}{FixedUpdate} loop.
 
 
 After getting simple attraction to work, we also made a function for simple harmonic motion, which followed the same guidelines. After learning that this was possible, we made a simple non-relativistic physics engine, which used the idea of using the \mintinline{csharp}{Rigidbody} component to access an objects mass. Then we apply Newton's second law to get the objects acceleration. From the acceleration, we can control the velocity and the position of the object. This was done in the following script: 
+
 \inputminted[firstline=29,lastline=55,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/MainEngine.cs}
-One of the interesting things that we learned while applying this script, was the semi-implicit Euler step. This method of working backward from the acceleration to get the position allows us to efficiently keep track of the energy of the particle without waste. By combining this generic non-relativistic physics engine with our gravitational function above, we were able to give objects a certain initial velocity, and then, due to the gravitational force, have them revolve around each other. 
+
+One of the interesting things that we learned while applying this script, was the semi-implicit Euler step. This method of working backward from the acceleration to get the position allows us to efficiently keep track of the energy of the particle without waste. The difference between the explicit Euler step and the semi-implicit is remarkably simple. Both use the simplest approximation of the derivative,
+\begin{equation}
+\Delta x \approx \dv{x}{t} \Delta t.
+\end{equation}
+Here, $f'$ would be represented by the velocity of the object, while $\Delta x$ would be the displacement, and $\Delta t$ the elapsed time. This approximation is also used for the velocity calculation in both the the explicit and semi-implicit Euler steps. 
+
+The only difference between the two is that the velocity calculation comes \emph{first} in the explicit step, but \emph{second} in the semi-implicit. This has the advantage of being a symplectic integrator, meaning it can be derived from Hamilton's equations of motion. This causes it to be remarkably good at conserving energy. A good example of where non-symplectic integrators tend to fail is in damped oscillators. The standard Euler-step tends to \emph{gain} energy as time advances becasue of numerical approximation mistakes. Making the $\Delta t$ smaller here is not very helpful. A symplectic verison of the integrator (\eg the semi-implicit Euler) has no such problem.
+
+By combining this generic non-relativistic physics engine with our gravitational function above, we were able to give objects a certain initial velocity, and then, due to the gravitational force, have them revolve around each other. 
 
 \subsubsection{Length Contraction}
 We then applied what we learned about forces, position, and mass from our simple non-relativistic engine into these simple laws to a basic physics engine that changes an objects position based on an inputed velocity and acceleration. To get the object to accelerate, we applied one of the things built into Unity, the \mintinline{csharp}{RigidBody} component. This is a function within unity that allows one to give any shape a rigid body which allows other objects to interact with it via elastic and inelastic collisions. In addition, we can give an object mass and change an objects translational and angular drag. For our final scene we kept this script as our main physics engine and used it as a class to act on our observer. 
