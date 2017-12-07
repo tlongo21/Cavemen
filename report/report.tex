@@ -21,6 +21,7 @@
 \usepackage{cleveref}
 \usepackage{graphicx}
 \usepackage{siunitx}
+\usepackage{svg}
 \usepackage{multicol}
 \usepackage{minted}
 \usepackage[super]{nth}
@@ -119,6 +120,26 @@ The software also allowed the team members of this project to work independently
 
 \subsubsection{Camera Movement}
 
+Letting the player control the movement of the camera was tricky to set up. By default, Unity has no player movement built in. At first, we designed code so that the player could look around and move using the arrow keys. This was essentially the goal, but the movement was unintuitive. Each arrow key corresponded to a certain absolute direction, regardless of the direction the user is facing. Most games and control system have \enquote{w} or the up-arrow move the or the up-arrow move the user \enquote{forward}. This took some playing around with angles.
+
+\begin{figure}[h]
+  \centering
+  \includesvg[width=0.2\textwidth]{images/axis.svg}
+  \caption{Shown is Unity's horizontal axis system. This is the plane of the \enquote{ground}. Note that the system is left-handed.}
+\end{figure}
+
+So, knowing this angle, and the defined movement speed of the camera, we can compute the speed in both the $x$ and $z$ directions using the following equations.
+\begin{align}
+v_x &= v \sin(\theta) \\
+v_z &= v \cos(\theta)
+\end{align}
+
+This was implemented in the following code.
+\inputminted[firstline=12,lastline=29,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/Engine/FreeCamera.cs}
+
+It became necessary to define new velocity constants $v_\mathit{xh}$ and $v_\mathit{zh}$, which are perpendicular to the original speeds. This is to implement sideways movement. This simulates sideways movement by sipmly making it movement perpendicular to the foward movement.
+
+
 \subsubsection{Length Contraction}
 We applied what we learned in these simple laws to a basic physics engine that changes an objects position based on an inputed velocity and acceleration. To get the object to accelerate, we applied one of the things built into Unity, the \mintinline{csharp}{RigidBody} component. This is a function within unity that allows one to give any shape a rigid body which allows other objects to interact with it via elastic and inelastic collisions. In addition, we can give an object mass and change an objects translational and angular drag. For our final scene we kept this script as our main physics engine and used it as a class to act on our observer. 
 
@@ -133,6 +154,45 @@ Where $L_0$ is the proper length, or the length of an object in its rest frame. 
 For this scene, we made the camera the observer, so that the viewer is always in the position of the moving object and will get to see the other objects contract. Therefore, using our main physics engine we attached a velocity to our camera, and we attached a generic object variable to the camera as well. Then, in unity, we mapped our object, the sphere, to the camera, so that as the camera's speed changed so to did the objects length.
 
 \inputminted[firstline=2,lastline=10,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/CameraFollow.cs}
+
+
+
+\section{Future Work}
+
+\paragraph{Macro-Scale Length Contraction}
+Even within the theory of special relativity, there is plenty of work to be done. There are several aspects of the simulation which are blatantly non-physical. First and foremost, the length contraction does not affect the distance between the reference frame (the camera) and the other objects in the scene. This will eventually be implemented by keeping track of the reference frame's position and speed, and adjusting the distance between all other objects and itself accordingly.
+
+\paragraph{Relativistic Apparent Bending}
+When traveling at speeds close to the speed of light, the time it takes light to bounce off of objects and travel to the observer becomes non-negligible. So, from the perspective of the observer (player camera), when traveling at high speeds causes light from parts of an object that are closer to the player to arrive before light from parts that are further. This causes objects to appear as though they are bending. The futher a part of an object is from the player (very high up, for example), the more it appears to bend. This effect can be implemented using the concept of a \enquote{mesh} in Unity, which defines the shape of an object. It is possible to reshape a mesh using a set of calculated points and by using cubic interpolation between them.
+
+\paragraph{Game Objectives}
+Ideally, the working result of the team's efforts would be a playable video game. While we do not aim to approach a game which would be commerically viable, there should at least be some game objective. This will most likely be to collect objects in a timed fashion, or, more ambitiously, to shoot small pellets at targets or into containers. Both of these have the advantage of being spatially-based objectives, which will highlight the relativistic effects we are programming into the system. The bending of the light and the length contraction will both make this more challenging for players.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
