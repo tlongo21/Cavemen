@@ -139,6 +139,8 @@ This was implemented in the following code.
 
 It became necessary to define new velocity constants $v_\mathit{xh}$ and $v_\mathit{zh}$, which are perpendicular to the original speeds. This is to implement sideways movement. This simulates sideways movement by sipmly making it movement perpendicular to the foward movement.
 
+\subsubsection{\mintinline{python}{CustomBody}}
+
 
 \subsubsection{Length Contraction}
 We applied what we learned in these simple laws to a basic physics engine that changes an objects position based on an inputed velocity and acceleration. To get the object to accelerate, we applied one of the things built into Unity, the \mintinline{csharp}{RigidBody} component. This is a function within unity that allows one to give any shape a rigid body which allows other objects to interact with it via elastic and inelastic collisions. In addition, we can give an object mass and change an objects translational and angular drag. For our final scene we kept this script as our main physics engine and used it as a class to act on our observer. 
