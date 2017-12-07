@@ -7,6 +7,7 @@ public class ReferenceFrameEngine : MonoBehaviour {
 
     public static List<GameObject> bodies;    // This is the list of object to be contracted.
     private Vector3 velocity;  // This is the initial velocity of the object.
+    private Vector3 acceleration;
 
     private float lightSpeed = 100f; // Speed of light
     public float maximumDistance = 100f; // Maximum distance the player travels before resetting
@@ -26,6 +27,7 @@ public class ReferenceFrameEngine : MonoBehaviour {
 
         // Use the velocity vector determined from the Physics Engine
         velocity = refFrameEngine.velocityVector;
+        acceleration = refFrameEngine.accelerationVector;
 
         // Initialize the counter.
         speedCount = 10f/lightSpeed;
@@ -68,7 +70,7 @@ public class ReferenceFrameEngine : MonoBehaviour {
 
         // If the space bar is pressed down by the player do the following:
         if (Input.GetKeyDown("up"))
-        {           
+        {    
             velocity = (velocity + lightVector*0.9999999f)*0.5f; // Update the speed with the speed of light      
         }
         if (Input.GetKeyDown("down"))
