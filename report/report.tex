@@ -7,6 +7,13 @@
 \definecolor{codebg}{rgb}{0.94,0.94,0.94}
 \definecolor{outbg}{rgb}{0.90,0.90,0.95}
 
+% Font packages
+\usepackage[utf8]{inputenc}
+\usepackage[lf]{Baskervaldx}
+\usepackage[vvarbb, baskervaldx]{newtxmath}
+\usepackage{inconsolata}
+\usepackage[cal=boondoxo]{mathalfa} % mathcal from STIX
+
 % General packages
 \usepackage{physics, amsmath, amssymb}
 \usepackage{booktabs}
@@ -44,6 +51,8 @@
 \newcommand{\jhat}{\hat{\textbf{\j}}}
 \newcommand{\khat}{\hat{\textbf{k}}}
 \newcommand{\bigO}[1]{\mathcal{O}\qty(#1)}
+\def\cpp{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.1em}{\small\bf ++}}}
+\newcommand{\csharp}{C$^\sharp$}
 \graphicspath{Images/}
 
 \begin{document}
@@ -51,38 +60,67 @@
 \author{Thomas Longo \and Vince Mutolo}
 \maketitle
 
-\section*{Introduction}
+\section{Introduction}
 The ultimate goal of this project is to create a physics engine that works in special relativistic frames. After creating this engine, we will project a simple scene into Villanova's CAVE Automatic Virtual Environment (CAVE). In doing this, we intend to learn about special relativity and how the observer's view changes based on its speed and its speed relative to other objects. In addition, we intend to convey this knowledge to other students in a fun and creative way through the use of the CAVE.
 
-\section*{Theory}
+\section{Theory}
 There was a very small amount of theory for our project because our project was mostly computer programming. Therefore, this theory will mostly be used to define some of the terms that will be used in the following sections for how our code works.
 
-With our initial goal of programming a relativistic physics game engine, we first, needed to get acquainted with the system that we were using. We decided to use Unity, which is a game development engine that is compatible with the CAVE and has a number of physical systems already preprogrammed into it. However, in working with Unity we must understand how Unity defines its space. It uses a left handed coordinate axis system where $y$ is defined to be up. Second, Unity uses a system where all scripts are written in C\#. This is a coding language that was unfamiliar to us, but was close to c++. 
+With our initial goal of programming a relativistic physics game engine, we first, needed to get acquainted with the system that we were using. We decided to use Unity, which is a game development engine that is compatible with the CAVE and has a number of physical systems already preprogrammed into it. However, in working with Unity we must understand how Unity defines its space. It uses a left handed coordinate axis system where $y$ is defined to be up. Second, Unity uses a system where all scripts are written in \csharp{}. This is a coding language that was unfamiliar to us, but was close to \cpp{}. 
 
-In programming in C\#, one of the first things that we learned was the difference between the three types of update loops associated with Unity, the \textit{Update}, \textit{FixedUpdate}, and \textit{LateUpdate} loops. These loops trigger at different times. The \textit{Update} loop, updates everything within it once per scene frame, and therefore, is very useful for keeping track of counters or inputs. The \textit{FixedUpdate} loop can update anything within it based on any time interval, and therefore, is typically the main update loop for updating objects that have physical properties associated with them. Lastly, the \textit{LateUpdate} loop updates anything within it after the \textit{Update} loop, and therefore, it is mostly useful for the camera which is typically following the object that is being updated.
+In programming in \csharp{}, one of the first things that we learned was the difference between the three types of update loops associated with Unity, the \mintinline{csharp}{Update}, \mintinline{csharp}{FixedUpdate}, and \mintinline{csharp}{LateUpdate} loops. These loops trigger at different times. The \mintinline{csharp}{Update} loop, updates everything within it once per scene frame, and therefore, is very useful for keeping track of counters or inputs. The \mintinline{csharp}{FixedUpdate} loop can update anything within it based on any time interval, and therefore, is typically the main update loop for updating objects that have physical properties associated with them. Lastly, the \mintinline{csharp}{LateUpdate} loop updates anything within it after the \mintinline{csharp}{Update} loop, and therefore, it is mostly useful for the camera which is typically following the object that is being updated.
 
-\section*{Methods}
-\subsection*{Introduction to Unity}
+\section{Methods}
+\subsection{Introduction to Unity}
 \begin{itemize}
 	\item We began by getting acquainted with Unity through the use of various tutorials.
 	\item In these tutorials, we learned about how to use the GUI interface associated with Unity.
-	\item Then, we learned about how to use C\# and how to apply different scripts to object in the game.
+	\item Then, we learned about how to use \csharp{} and how to apply different scripts to object in the game.
 \end{itemize}
 
-\subsection*{Simple Physics}
+\subsection{Simple Physics}
 \begin{itemize}
 	\item We programmed a simple scene that takes into account Newton's Law of Gravitation and Hooke's Law.
 	\item After, we made a basic physics engine to update an object's position, based on an inputed velocity and acceleration.
 \end{itemize}
 
-\subsection*{Relativistic Tests}
+\subsection{Relativistic Tests}
 \begin{itemize}
-	\item After becoming acquainted with Unity and C\#, we made a simple 1-D length contraction scene in Unity. 
-	\item In this scene, when the user presses ``spacebar'' the object increases its speed by $0.1c$ and all objects in the scene contract accordingly.
+	\item After becoming acquainted with Unity and \csharp{}, we made a simple 1-D length contraction scene in Unity. 
+	\item In this scene, when the user presses \enquote{spacebar} the object increases its speed by $0.1c$ and all objects in the scene contract accordingly.
 \end{itemize}
 
-\section*{Results}
-We applied what we learned in these simple laws to a basic physics engine that changes an objects position based on an inputed velocity and acceleration. To get the object to accelerate, we applied one of the things built into Unity, the \textit{rigidbody} component. This is a function within unity that allows one to give any shape a rigid body which allows other objects to interact with it via elastic and inelastic collisions. In addition, we can give an object mass and change an objects translational and angular drag. For our final scene we kept this script as our main physics engine and used it as a class to act on our observer. 
+\section{Results}
+
+\subsection{GitHub}
+\subsubsection{Introduction to Git}
+The first major problem was to determine how to collaborate between all of the team members. We knew that there would be several (2--3) all working on the same code all at once. Each person would inevitably have their own version of the code. We also wanted to be able to collaborate on both the presentation and the final report in \LaTeX{}. Luckily, this is a problem which computer scientists have already solved.
+
+Linus Torvalds, the original creator of the Linux kernel, developed a particularly popular solution to this problem, which he called git. Git is a kind of software called a \enquote{version control system}, or a VCS. In particular, it was developed for massive collaboration (thousands of people) on massive projects (millions of lines of code). Git keeps track of who made what edits, when they made them, and where they made them. Using git, one can revert to any state of the project that ever existed, created by anyone. This is the power of the software. The work is \emph{never} lost. 
+
+The most common use of the software is as follows. A single user will create a git repository for the project. Other users will \enquote{branch} off of this main repository and create whatever changes they want. When a user wants to record the current state of his project in the immutable history of states in the repository, the user will \enquote{commit} to his or her branch. Generally, users should only work on branches of the main project, or \enquote{main branch}. The main branch is reserved for stable, presentable versions of the project. When a side branch becomes suitably stable, it is then \enquote{merged} with the main branch, and deleted.
+
+GitHub is the most popular open-source website in the world, and underlying it is the git software. This was used as the shared cloud-based repository for the entirety of our project, including the presentation (done in HTML), the report, and the unity scenes and code.
+
+\subsubsection{The \mintinline{text}{.gitignore} File}
+There were a few challenges in getting git set up correctly and working. First and foremost among these challenges was creating the \mintinline{text}{.gitignore} file. It would be problematic if git were to keep track of \emph{every} file in the entire project. Computer programs routinely produce thousands of generated files which are regenerated on each run of the program. These files do not need to be maintained and placed under version control. In reality, the only files which need to be watched are mostly the ones which humans edit. This spawned the idea of a \mintinline{text}{.gitignore} file. This file contains string patterns which \enquote{ignore} certain types of files, in certain directories, and lots of other definable patterns. A sample of ours appears as follows.
+
+\inputminted[firstline=0,lastline=10,linenos,fontsize=\footnotesize,bgcolor=codebg]{text}{../.gitignore}
+
+Anything specified in this file is specified \emph{to be ignored}. Thus, anything in Unity's \mintinline{text}{Library}, \mintinline{text}{Temp}, or \mintinline{text}{Build} directories, among others, will not be included in the repository.
+
+\subsubsection{Helpfulness}
+Git and GitHub were absolutely indispensable. At one point in the project, when a piece of code was not working, it was said, \enquote{Worst case scenario, I can just delete the branch and start over.} This is an incredibly freeing aspect of the software, and it encourages creativity and experimentation. It does not matter what ridiculous kind of breaking changes are made, since it is trivial to revert to a previous version of the project, or simply delete the current branch and re-branch \enquote{off of main}.
+
+The software also allowed the team members of this project to work independently on different aspects of the project at the same time. If one member was curious as to what the other was working on, all we had to do was switch to the other's branch. Code could then be copied and reused in other branches still. The process encourages efficient, safe, and creative work flows.  
+
+
+\subsection{Developing the Physics Engine}
+
+\subsubsection{Camera Movement}
+
+\subsubsection{Length Contraction}
+We applied what we learned in these simple laws to a basic physics engine that changes an objects position based on an inputed velocity and acceleration. To get the object to accelerate, we applied one of the things built into Unity, the \mintinline{csharp}{RigidBody} component. This is a function within unity that allows one to give any shape a rigid body which allows other objects to interact with it via elastic and inelastic collisions. In addition, we can give an object mass and change an objects translational and angular drag. For our final scene we kept this script as our main physics engine and used it as a class to act on our observer. 
 
 Next, we programmed a simple length contraction of a sphere based on the speed of an observer. To do this, we needed to use the length contraction formula, which states:
 \begin{equation}
@@ -93,9 +131,8 @@ Where $L_0$ is the proper length, or the length of an object in its rest frame. 
 \gamma = (1-\beta^2)^{-1/2}
 \end{equation}
 For this scene, we made the camera the observer, so that the viewer is always in the position of the moving object and will get to see the other objects contract. Therefore, using our main physics engine we attached a velocity to our camera, and we attached a generic object variable to the camera as well. Then, in unity, we mapped our object, the sphere, to the camera, so that as the camera's speed changed so to did the objects length.
-\inputminted[firstline=2,lastline=10,linenos,fontsize=\footnotesize]{csharp}{../unity/Assets/Scripts/CameraFollow.cs}
 
-
+\inputminted[firstline=2,lastline=10,linenos,fontsize=\footnotesize,bgcolor=codebg]{csharp}{../unity/Assets/Scripts/CameraFollow.cs}
 
 
 
