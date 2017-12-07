@@ -21,7 +21,7 @@ public class CustomBody : MonoBehaviour
     private float refFrameDirection;
 
     private float lightSpeed = 100f;
-    public Vector3 normSize;
+    public Vector3 normSize=new Vector3(5f,5f,5f);
 
     // Define some physical constants.
     float G = 0.5f;							// Gravitational constant
