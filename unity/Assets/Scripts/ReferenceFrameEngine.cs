@@ -88,6 +88,23 @@ public class ReferenceFrameEngine : MonoBehaviour {
         float scaleX_adj = Mathf.Sqrt(1 - Mathf.Pow(currentXSpeed / lightSpeed, 2f));
         float scaleZ_adj = Mathf.Sqrt(1 - Mathf.Pow(currentZSpeed / lightSpeed, 2f));
         this.transform.localScale = new Vector3(scaleX_adj * normSize.x, normSize.y, scaleZ_adj * normSize.z);
+
+        // Change the object size of the objects in our bodies list based on the gamma factor
+      foreach (GameObject contractable in bodies)
+      {   // Transform the scale of the object based on the speed of the incoming object.
+      contractable.transform.localScale = new Vector3(normSize.x * OneOverGammaX,
+          normSize.y * OneOverGammaY, normSize.z * OneOverGammaZ);
+
+        // The code below just as an emergency incase the size ever gets negative.
+      if (contractable.transform.localScale.x < minSize.x)
+          contractable.transform.localScale = normSize;
+
+        if (contractable.transform.localScale.y < minSize.y)
+          contractable.transform.localScale = normSize;
+
+        if (contractable.transform.localScale.z < minSize.z)
+          contractable.transform.localScale = normSize;
+      }
     }
 
     // Update the speed counter display that the player will view.
