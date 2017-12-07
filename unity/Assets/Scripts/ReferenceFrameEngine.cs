@@ -27,7 +27,7 @@ public class ReferenceFrameEngine : MonoBehaviour {
 
         // Use the velocity vector determined from the Physics Engine
         velocity = refFrameEngine.velocityVector;
-        acceleration = refFrameEngine.accelerationVector;
+        //acceleration = refFrameEngine.accelerationVector;
 
         // Initialize the counter.
         speedCount = 10f/lightSpeed;
