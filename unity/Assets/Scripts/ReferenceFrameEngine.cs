@@ -5,72 +5,145 @@ using UnityEngine.UI;
 
 public class ReferenceFrameEngine : MonoBehaviour {
 
-    public Vector3 speed = new Vector3(10f,0f,0f);     //this will be the speed in the x-direction, added by user
-    public GameObject obj;    // this is the object to be contracted.
+    public static List<GameObject> bodies;    // This is the list of object to be contracted.
+    private Vector3 velocity;  // This is the initial velocity of the object.
+    private Vector3 acceleration;
 
-    private float lightSpeed = 100f; // speed of light
-    public float maximumDistance = 100f; // maximum distance the player travels before resetting
+    private float lightSpeed = 100f; // Speed of light
+    public float maximumDistance = 100f; // Maximum distance the player travels before resetting
 
-    public Text speedText; // a class for adding text
-    private float speedCount; // counter that will display the speed 
+    public Text speedText; // A class for adding text
+    private float speedCount; // Counter that will display the speed 
+
+    private GameObject refFrame;       // Call the MainEngine
+    private MainEngine refFrameEngine;
 
     // On start up Unity will run this code
     void Start()
-    {   // initialize the counter.
+    { 
+        // On the start up, initialize the variables.
+        refFrame = GameObject.Find("Main Camera");
+        refFrameEngine = GetComponent<MainEngine>();
+
+        // Use the velocity vector determined from the Physics Engine
+        velocity = refFrameEngine.velocityVector;
+        acceleration = refFrameEngine.accelerationVector;
+
+        // Initialize the counter.
         speedCount = 10f/lightSpeed;
-        SetSpeedText(); // call our UI update function.
+        SetSpeedText(); // Call our UI update function.
+    }
+
+    // Add all objects with a specific Tag into our bodies list
+    void OnEnable()
+    {
+        if (bodies == null) // If there is nothing in the list begin appending.
+        {
+            bodies = new List<GameObject>();
+        }
+
+        // Look for the Tag "contractable" and add it.
+        foreach (GameObject contractable in GameObject.FindGameObjectsWithTag("contractable"))
+        {
+            bodies.Add(contractable);
+        }
+        
     }
 
     void FixedUpdate()
-    {   // at each time step move the camera based on the speed inserted above.
-        transform.position += speed * Time.deltaTime;
-        // if the x position of the object is greater than the distance, reset the poisiton.
+    {   
+        // If the x position of the object is greater than the distance, reset the poisiton.
         if (transform.position.x > maximumDistance)
             transform.position = Vector3.zero;
+        if (transform.position.x < 0f)
+            transform.position = new Vector3(1,0,0)*maximumDistance;
     }
 
-    // this is the update loop which works similarly to the FixedUpdate loop
+    // This is the update loop which works similarly to the FixedUpdate loop
     void Update()
-    {   // calls the contraction function from below.
+    {   // Calls the contraction function from below.
 
         Contraction();
-        
-        // if the space bar is pressed down by the player do the following:
-        if (Input.GetKeyDown("space"))
-        {   
-            Vector3 lightVector = new Vector3(lightSpeed, 0, 0); // initialize a light Vector.
-            speed = (speed + lightVector*0.9999999f)*0.5f; // update the speed with the speed of light
-            
-            // update the speed counter display
-            speedCount = speed.magnitude/lightSpeed;
-            SetSpeedText();
-        }    
+
+        Vector3 lightVector = new Vector3(lightSpeed, 0, 0); // Initialize a light Vector.
+        Vector3 currentVel = velocity;
+
+        // If the space bar is pressed down by the player do the following:
+        if (Input.GetKeyDown("up"))
+        {    
+            velocity = (velocity + lightVector*0.9999999f)*0.5f; // Update the speed with the speed of light      
+        }
+        if (Input.GetKeyDown("down"))
+        {
+            velocity = (velocity - new Vector3 (10f,0f,0f));
+        }
+        if (Input.GetKeyDown("left"))
+        {
+            velocity = (velocity + new Vector3(0f,0f,10f));
+
+            if (velocity.z < -lightSpeed)
+                velocity.z = lightSpeed * 0.9999f;
+        }
+        if (Input.GetKeyDown("right"))
+        {
+            velocity = (velocity - new Vector3(0f, 0f, 10f));
+
+            if (velocity.z > lightSpeed)
+                velocity.z = lightSpeed * 0.9999f;    
+        }
+
+        refFrameEngine.setVelocity(currentVel); // Set the Velocity in the Physics Engine in the MainEngine.
+        // Update the speed counter display
+        speedCount = currentVel.magnitude / lightSpeed;
+        SetSpeedText();
+
+        //currentVel.magnitude = Mathf.Clamp(velocity.magnitude, -lightSpeed, lightSpeed);
+
+
     }
-    // initialize some size limitations for our object.
+    // Initialize some size limitations for our object.
     // Yes, Vince, I know this is not good for general coding.
-    private Vector3 minSize = new Vector3(0f, 10f, 10f);
+    private Vector3 minSize = Vector3.zero;
     private Vector3 normSize = new Vector3(10f, 10f, 10f);
 
-    // this function will be our length contraction 
+    // This function will be our length contraction 
     void Contraction()
     {
 
         // Determine the current speed and calculate the gamma factor.
-        float currentSpeed = speed.magnitude;
-        float gamma = Mathf.Sqrt(1 - Mathf.Pow(currentSpeed / lightSpeed, 2f));
+        // Coundn't think of a better way to do this, so I broke everything into its component forms and then 
+        // changed the scale factors based on the velocities in the different component directions.
+        float currentXSpeed = velocity.x;
+        float currentYSpeed = velocity.y;
+        float currentZSpeed = velocity.z;
 
-        // change the object size based on the gamma factor
-        obj.transform.localScale = new Vector3 (normSize.x * gamma, normSize.y,normSize.z);
+        float OneOverGammaX = Mathf.Sqrt(1 - Mathf.Pow(currentXSpeed / lightSpeed, 2f));
+        float OneOverGammaY = Mathf.Sqrt(1 - Mathf.Pow(currentYSpeed / lightSpeed, 2f));
+        float OneOverGammaZ = Mathf.Sqrt(1 - Mathf.Pow(currentZSpeed / lightSpeed, 2f));
 
-        // code below just as an emergency message incase the size ever gets negative. 
-        if (obj.transform.localScale.x < minSize.x)
-            obj.transform.localScale = normSize;
+        // Change the object size of the objects in our bodies list based on the gamma factor
+        foreach (GameObject contractable in bodies)
+        {   // Transform the scale of the object based on the speed of the incoming object.
+            contractable.transform.localScale = new Vector3(normSize.x * OneOverGammaX, 
+                normSize.y * OneOverGammaY, normSize.z * OneOverGammaZ);
+
+            // The code below just as an emergency incase the size ever gets negative. 
+            if (contractable.transform.localScale.x < minSize.x)
+                contractable.transform.localScale = normSize;
+
+            if (contractable.transform.localScale.y < minSize.y)
+                contractable.transform.localScale = normSize;
+
+            if (contractable.transform.localScale.z < minSize.z)
+                contractable.transform.localScale = normSize;
+        }
+        
     }
 
-    // update the speed counter display that the player will view.
+    // Update the speed counter display that the player will view.
     void SetSpeedText()
-    {   // basically just turns everything into a string and writes it in unity.
-        speedText.text = (speed.magnitude/lightSpeed).ToString() + "c";
+    {   // Basically just turns everything into a string and writes it in unity.
+        speedText.text = (velocity.magnitude/lightSpeed).ToString() + "c";
     }
 
 }
