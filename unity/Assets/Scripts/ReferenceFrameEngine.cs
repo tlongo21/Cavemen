@@ -14,7 +14,7 @@ public class ReferenceFrameEngine : MonoBehaviour {
     private float lightSpeed = 100f; // Speed of light
 
     public Text speedText; // A class for adding text
-    private float speedCount; // Counter that will display the speed 
+    private float speedCount; // Counter that will display the speed
 
     private GameObject refFrame;       // Call the MainEngine
     private FreeCamera refFrameObj;
@@ -24,7 +24,7 @@ public class ReferenceFrameEngine : MonoBehaviour {
 
     // On start up Unity will run this code
     void Start()
-    { 
+    {
         // On the start up, initialize the variables.
         refFrame = GameObject.Find("Main Camera");
         refFrameObj = GetComponent<FreeCamera>();
@@ -32,27 +32,37 @@ public class ReferenceFrameEngine : MonoBehaviour {
         // Use the velocity vector determined from the Physics Engine
         refFrameSpeed = refFrameObj.get_Speed();
         refFrameDirection = refFrameObj.get_direction_angle();
-        
+
         // Initialize the counter.
         speedCount = 0.1f/lightSpeed;
         SetSpeedText(); // Call our UI update function.
     }
 
-    private void OnEnable()
+    // Add all objects with a specific Tag into our bodies list
+    void OnEnable()
     {
-        
+        if (bodies == null) // If there is nothing in the list begin appending.
+        {
+            bodies = new List<GameObject>();
+        }
+
+        // Look for the Tag "contractable" and add it.
+        foreach (GameObject contractable in GameObject.FindGameObjectsWithTag("contractable"))
+        {
+            bodies.Add(contractable);
+        }
+
     }
-}
 
     private Vector3 minSize = Vector3.zero;
     private Vector3 normSize = new Vector3 (5f,5f,5f);
 
     // This is the update loop which works similarly to the FixedUpdate loop
     void Update()
-    {       
+    {
         // Update the speed counter display
         speedCount = refFrameSpeed / lightSpeed;
-        
+
         // Take the absolute movement speed and convert it into its components.
         V_x = refFrameSpeed * Mathf.Sin(refFrameDirection);
         V_z = refFrameSpeed * Mathf.Cos(refFrameDirection);
@@ -77,9 +87,9 @@ public class ReferenceFrameEngine : MonoBehaviour {
 
         float scaleX_adj = Mathf.Sqrt(1 - Mathf.Pow(currentXSpeed / lightSpeed, 2f));
         float scaleZ_adj = Mathf.Sqrt(1 - Mathf.Pow(currentZSpeed / lightSpeed, 2f));
-        this.transform.localScale = new Vector3(scaleX_adj * normSize.x, normSize.y, scaleZ_adj * normSize.z);     
+        this.transform.localScale = new Vector3(scaleX_adj * normSize.x, normSize.y, scaleZ_adj * normSize.z);
     }
-   
+
     // Update the speed counter display that the player will view.
     void SetSpeedText() {   // Basically just turns everything into a string and writes it in unity.
         speedText.text = "Velocity" + (speedCount).ToString() + "c";
