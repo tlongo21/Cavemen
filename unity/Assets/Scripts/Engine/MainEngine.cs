@@ -33,8 +33,18 @@ public class MainEngine : MonoBehaviour {
 	// FIRST, and THEN calculate the new position.
 	void UpdateState()
 	{
-		// Define the accelerationVector as a Vector3.
-		Vector3 accelerationVector = netForceVector / rb.mass;
+        // Define the accelerationVector as a Vector3.
+        Vector3 accelerationVector;
+
+        // Handle the case where there is no associated Rigidbody.
+        if (rb != null)
+        {
+            accelerationVector = netForceVector / rb.mass;
+        }
+        else
+        {
+            accelerationVector = Vector3.zero;
+        }
 
 		// Update the velocity vector
 		velocityVector += accelerationVector * Time.deltaTime;
@@ -44,5 +54,10 @@ public class MainEngine : MonoBehaviour {
 		transform.position += velocityVector * Time.deltaTime;
 
 	}
+    // Set the velocity outside the MainEngine.
+    public void setVelocity(Vector3 vel)
+    {
+        velocityVector = vel;
+    }
 }
 
