@@ -5,7 +5,7 @@ using UnityEngine;
 public class FreeCamera : MonoBehaviour
 {
 
-	public float moveSpeed=80f; // This variable will be defined by the user. 
+	public float moveSpeed=99f; // This variable will be defined by the user. 
     public Vector3 positionVector;
     private Vector3 velocityVector; // Store the camera's (player's) velocity
 	private float rotateSpeed = 5f;
