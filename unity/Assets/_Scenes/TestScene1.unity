@@ -147,7 +147,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 7a64f9dec2d82ca459fc5e018fa65ebc, type: 2}
+  - {fileID: 2100000, guid: 77b5c76bb6b73cd4fa862158d8c767cb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -210,11 +210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edac24949347d684492c4c8d597be8f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 223153334}
-  velocityVector: {x: 0, y: 0, z: 0}
-  netForceVector: {x: 0, y: 0, z: 0}
-  forceVectorList:
-  - {x: 0, y: 0, z: 0}
 --- !u!54 &223153334
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -241,7 +236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469735fe7268734b9050aed7380c132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 223153334}
 --- !u!1 &945065136
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469735fe7268734b9050aed7380c132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 945065138}
 --- !u!54 &945065138
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -301,10 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edac24949347d684492c4c8d597be8f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 945065138}
-  velocityVector: {x: 0, y: 0, z: 200}
-  netForceVector: {x: 0, y: 0, z: 0}
-  forceVectorList: []
 --- !u!23 &945065140
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -489,7 +478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469735fe7268734b9050aed7380c132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 1184529864}
 --- !u!54 &1184529864
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -516,10 +504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edac24949347d684492c4c8d597be8f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 1184529864}
-  velocityVector: {x: 0, y: 140, z: 140}
-  netForceVector: {x: 0, y: 0, z: 0}
-  forceVectorList: []
 --- !u!23 &1184529866
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -679,7 +663,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4e8fe2e46242c4589ee7d1a1935f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 223153328}
 --- !u!114 &1266865439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,7 +674,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c4c96236ff4a84c8ae980fedcf4411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
 --- !u!1 &1530792584
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,7 +706,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f469735fe7268734b9050aed7380c132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 1530792586}
 --- !u!54 &1530792586
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -751,10 +732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edac24949347d684492c4c8d597be8f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 1530792586}
-  velocityVector: {x: 200, y: 0, z: 0}
-  netForceVector: {x: 0, y: 0, z: 0}
-  forceVectorList: []
 --- !u!23 &1530792588
 MeshRenderer:
   m_ObjectHideFlags: 0
