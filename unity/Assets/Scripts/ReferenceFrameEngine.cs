@@ -13,14 +13,14 @@ public class ReferenceFrameEngine : MonoBehaviour {
     public float maximumDistance = 100f; // Maximum distance the player travels before resetting
 
     public Text speedText; // A class for adding text
-    private float speedCount; // Counter that will display the speed 
+    private float speedCount; // Counter that will display the speed
 
     private GameObject refFrame;       // Call the MainEngine
     private MainEngine refFrameEngine;
 
     // On start up Unity will run this code
     void Start()
-    { 
+    {
         // On the start up, initialize the variables.
         refFrame = GameObject.Find("Main Camera");
         refFrameEngine = GetComponent<MainEngine>();
@@ -47,11 +47,11 @@ public class ReferenceFrameEngine : MonoBehaviour {
         {
             bodies.Add(contractable);
         }
-        
+
     }
 
     void FixedUpdate()
-    {   
+    {
         // If the x position of the object is greater than the distance, reset the poisiton.
         if (transform.position.x > maximumDistance)
             transform.position = Vector3.zero;
@@ -70,8 +70,8 @@ public class ReferenceFrameEngine : MonoBehaviour {
 
         // If the space bar is pressed down by the player do the following:
         if (Input.GetKeyDown("up"))
-        {    
-            velocity = (velocity + lightVector*0.9999999f)*0.5f; // Update the speed with the speed of light      
+        {
+            velocity = (velocity + lightVector*0.9999999f)*0.5f; // Update the speed with the speed of light
         }
         if (Input.GetKeyDown("down"))
         {
@@ -89,7 +89,7 @@ public class ReferenceFrameEngine : MonoBehaviour {
             velocity = (velocity - new Vector3(0f, 0f, 10f));
 
             if (velocity.z > lightSpeed)
-                velocity.z = lightSpeed * 0.9999f;    
+                velocity.z = lightSpeed * 0.9999f;
         }
 
         refFrameEngine.setVelocity(currentVel); // Set the Velocity in the Physics Engine in the MainEngine.
@@ -106,12 +106,12 @@ public class ReferenceFrameEngine : MonoBehaviour {
     private Vector3 minSize = Vector3.zero;
     private Vector3 normSize = new Vector3(10f, 10f, 10f);
 
-    // This function will be our length contraction 
+    // This function will be our length contraction
     void Contraction()
     {
 
         // Determine the current speed and calculate the gamma factor.
-        // Coundn't think of a better way to do this, so I broke everything into its component forms and then 
+        // Coundn't think of a better way to do this, so I broke everything into its component forms and then
         // changed the scale factors based on the velocities in the different component directions.
         float currentXSpeed = velocity.x;
         float currentYSpeed = velocity.y;
@@ -124,10 +124,10 @@ public class ReferenceFrameEngine : MonoBehaviour {
         // Change the object size of the objects in our bodies list based on the gamma factor
         foreach (GameObject contractable in bodies)
         {   // Transform the scale of the object based on the speed of the incoming object.
-            contractable.transform.localScale = new Vector3(normSize.x * OneOverGammaX, 
+            contractable.transform.localScale = new Vector3(normSize.x * OneOverGammaX,
                 normSize.y * OneOverGammaY, normSize.z * OneOverGammaZ);
 
-            // The code below just as an emergency incase the size ever gets negative. 
+            // The code below just as an emergency incase the size ever gets negative.
             if (contractable.transform.localScale.x < minSize.x)
                 contractable.transform.localScale = normSize;
 
@@ -137,7 +137,7 @@ public class ReferenceFrameEngine : MonoBehaviour {
             if (contractable.transform.localScale.z < minSize.z)
                 contractable.transform.localScale = normSize;
         }
-        
+
     }
 
     // Update the speed counter display that the player will view.
